@@ -9,7 +9,11 @@ example with active MQ.
 ```
 import { ActiveMqConnector } from 'stompjs-nodejs';
 
-const client = new ActiveMqConnector({brokerUrl: 'ws://localhost:61614/ws'})
+const client = new ActiveMqConnector({
+    brokerUrl: 'ws://localhost:61614/ws',
+    user: 'user',
+    password: 'password',
+});
 
 client.subsribe('/topic/name', (msg) => {
     console.log('received', msg);
