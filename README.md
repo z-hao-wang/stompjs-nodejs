@@ -1,8 +1,7 @@
 # stompjs-nodejs
-The default stompjs doesn't work with node directly due to missing poly fill
-This lib optimized stompjs in order to work with node
+Wrapper for stompjs works with nodejs and with typings
 
-##Usage
+## Usage
 npm i stompjs-nodejs --save
 
 example with active MQ.
@@ -26,7 +25,7 @@ but if you want to connect in advance, can do
 await client.connect()
 ```
 
-##Notes
+## Notes
 Currently it only tested to work with active MQ, I did not test on other MQ lib.
 Currently this wrapper only works for pub/sub mode, doesn't work for queue yet.
 

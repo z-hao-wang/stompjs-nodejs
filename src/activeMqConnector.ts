@@ -12,7 +12,7 @@ import * as stompjs from '@stomp/stompjs';
 export namespace ActiveMqConnector {
   export interface Options {
     brokerURL: string;
-    user: string,
+    user: string;
     password: string;
     debug?: boolean;
     heartbeatIncoming?: number;
