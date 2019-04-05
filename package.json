@@ -1,6 +1,6 @@
 {
   "name": "stompjs-nodejs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A nodejs wrapper for stompjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,6 +17,7 @@
     "@stomp/stompjs": "5.3.0",
     "ws": "6.2.1"
   },
+  "keywords": [ "nodejs", "activeMq", "stomp", "typescript" ],
   "repository": {
     "type": "git",
     "url": "https://github.com/z-hao-wang/stompjs-nodejs.git"
