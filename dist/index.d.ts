@@ -1,1 +1,1 @@
-export * from './activeMqConnector';
+export * from './StompClient';

@@ -16,7 +16,7 @@ if (typeof TextEncoder !== 'function') {
     Object.assign(global, { TextDecoder: TextEncodingPolyfill.TextDecoder });
 }
 const stompjs = require("@stomp/stompjs");
-class ActiveMqConnector {
+class StompClient {
     constructor(options) {
         this.connecting = false;
         const stompOptions = {
@@ -93,4 +93,4 @@ class ActiveMqConnector {
         }
     }
 }
-exports.ActiveMqConnector = ActiveMqConnector;
+exports.StompClient = StompClient;

@@ -7,9 +7,9 @@ npm i stompjs-nodejs --save
 example with active MQ.
 
 ```
-import { ActiveMqConnector } from 'stompjs-nodejs';
+import { StompClient } from 'stompjs-nodejs';
 
-const client = new ActiveMqConnector({
+const client = new StompClient({
     brokerUrl: 'ws://localhost:61614/ws',
     user: 'user',
     password: 'password',

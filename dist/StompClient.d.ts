@@ -1,5 +1,5 @@
 import * as stompjs from '@stomp/stompjs';
-export declare namespace ActiveMqConnector {
+export declare namespace StompClient {
     interface Options {
         brokerURL: string;
         user: string;
@@ -10,11 +10,11 @@ export declare namespace ActiveMqConnector {
         reconnectDelay?: number;
     }
 }
-export declare class ActiveMqConnector {
+export declare class StompClient {
     client: stompjs.Client;
     protected debug: boolean;
     protected connecting: boolean;
-    constructor(options: ActiveMqConnector.Options);
+    constructor(options: StompClient.Options);
     connect(): Promise<void | {}>;
     subscribe(topic: string, handler: (msg: string) => void): stompjs.StompSubscription | undefined;
     publish(topic: string, msg: string | object): void;

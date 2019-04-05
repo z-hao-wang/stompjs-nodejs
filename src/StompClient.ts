@@ -9,7 +9,7 @@ if (typeof TextEncoder !== 'function') {
 
 import * as stompjs from '@stomp/stompjs';
 
-export namespace ActiveMqConnector {
+export namespace StompClient {
   export interface Options {
     brokerURL: string;
     user: string;
@@ -21,12 +21,12 @@ export namespace ActiveMqConnector {
   }
 }
 
-export class ActiveMqConnector {
+export class StompClient {
   client: stompjs.Client;
   protected debug: boolean;
   protected connecting = false;
 
-  constructor(options: ActiveMqConnector.Options) {
+  constructor(options: StompClient.Options) {
     const stompOptions: stompjs.StompConfig = {
       brokerURL: options.brokerURL,
       connectHeaders: {
