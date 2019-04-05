@@ -17,7 +17,12 @@
     "@stomp/stompjs": "5.3.0",
     "ws": "6.2.1"
   },
-  "keywords": [ "nodejs", "activeMq", "stomp", "typescript" ],
+  "keywords": [
+    "nodejs",
+    "activeMq",
+    "stomp",
+    "typescript"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/z-hao-wang/stompjs-nodejs.git"

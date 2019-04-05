@@ -59,9 +59,7 @@ class StompClient {
                             handler(message.body);
                         });
                     });
-                    if (this.debug) {
-                        console.log(`StompClient onConnect sent publishQueue.length=${this.publishQueue.length} subscribedArr.length=${this.subscribedArr.length}`);
-                    }
+                    console.log(`StompClient onConnect sent publishQueue.length=${this.publishQueue.length} subscribedArr.length=${this.subscribedArr.length}`);
                     resolve();
                 };
                 this.client.onStompError = (frame) => {
