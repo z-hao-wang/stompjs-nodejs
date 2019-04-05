@@ -19,6 +19,8 @@ const stompjs = require("@stomp/stompjs");
 class StompClient {
     constructor(options) {
         this.connecting = false;
+        this.publishQueue = [];
+        this.subscribedArr = [];
         const stompOptions = {
             brokerURL: options.brokerURL,
             connectHeaders: {
@@ -49,6 +51,17 @@ class StompClient {
                     // Do something, all subscribes must be done is this callback
                     // This is needed because this will be executed after a (re)connect
                     this.connecting = false;
+                    this.publishQueue.forEach(({ topic, body }) => {
+                        this.client.publish({ destination: topic, body });
+                    });
+                    this.subscribedArr.forEach(({ topic, handler }) => {
+                        this.client.subscribe(topic, (message) => {
+                            handler(message.body);
+                        });
+                    });
+                    if (this.debug) {
+                        console.log(`StompClient onConnect sent publishQueue.length=${this.publishQueue.length} subscribedArr.length=${this.subscribedArr.length}`);
+                    }
                     resolve();
                 };
                 this.client.onStompError = (frame) => {
@@ -67,6 +80,7 @@ class StompClient {
     }
     subscribe(topic, handler) {
         // if topic is already subscribed, don't subscribe again
+        this.subscribedArr.push({ topic, handler });
         if (this.client.connected) {
             if (this.debug) {
                 console.log(`ActiveMQ subscribe`, topic);
@@ -76,20 +90,24 @@ class StompClient {
             });
         }
         else {
-            this.connect().then(() => {
-                this.subscribe(topic, handler);
-            });
+            this.connect();
         }
     }
     publish(topic, msg) {
+        const body = typeof msg === 'string' ? msg : JSON.stringify(msg);
         if (this.client.connected) {
-            const body = typeof msg === 'string' ? msg : JSON.stringify(msg);
-            this.client.publish({ destination: topic, body });
+            try {
+                this.client.publish({ destination: topic, body });
+            }
+            catch (e) {
+                console.error('publish failed retry', e);
+                this.publishQueue.push({ topic, body });
+                this.connect();
+            }
         }
         else {
-            this.connect().then(() => {
-                this.publish(topic, msg);
-            });
+            this.publishQueue.push({ topic, body });
+            this.connect();
         }
     }
 }

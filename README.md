@@ -36,4 +36,4 @@ Currently this wrapper only works for pub/sub mode, doesn't work for queue yet.
 
 contributions are welcome.
 
-Special thanks to original author Deepak Kumar for writing stompjs lib
+Special thanks to original authors of stompjs https://github.com/stomp-js/stompjs

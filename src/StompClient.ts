@@ -25,6 +25,8 @@ export class StompClient {
   client: stompjs.Client;
   protected debug: boolean;
   protected connecting = false;
+  protected publishQueue: { topic: string; body: string }[] = [];
+  protected subscribedArr: { topic: string; handler: (msg: string) => void }[] = [];
 
   constructor(options: StompClient.Options) {
     const stompOptions: stompjs.StompConfig = {
@@ -55,6 +57,21 @@ export class StompClient {
         // Do something, all subscribes must be done is this callback
         // This is needed because this will be executed after a (re)connect
         this.connecting = false;
+        this.publishQueue.forEach(({ topic, body }) => {
+          this.client.publish({ destination: topic, body });
+        });
+        this.subscribedArr.forEach(({ topic, handler }) => {
+          this.client.subscribe(topic, (message: stompjs.IFrame) => {
+            handler(message.body);
+          });
+        });
+        if (this.debug) {
+          console.log(
+            `StompClient onConnect sent publishQueue.length=${this.publishQueue.length} subscribedArr.length=${
+              this.subscribedArr.length
+            }`,
+          );
+        }
         resolve();
       };
 
@@ -75,6 +92,7 @@ export class StompClient {
 
   subscribe(topic: string, handler: (msg: string) => void) {
     // if topic is already subscribed, don't subscribe again
+    this.subscribedArr.push({ topic, handler });
     if (this.client.connected) {
       if (this.debug) {
         console.log(`ActiveMQ subscribe`, topic);
@@ -83,20 +101,23 @@ export class StompClient {
         handler(message.body);
       });
     } else {
-      this.connect().then(() => {
-        this.subscribe(topic, handler);
-      });
+      this.connect();
     }
   }
 
   publish(topic: string, msg: string | object) {
+    const body: string = typeof msg === 'string' ? msg : JSON.stringify(msg);
     if (this.client.connected) {
-      const body = typeof msg === 'string' ? msg : JSON.stringify(msg);
-      this.client.publish({ destination: topic, body });
+      try {
+        this.client.publish({ destination: topic, body });
+      } catch (e) {
+        console.error('publish failed retry', e);
+        this.publishQueue.push({ topic, body });
+        this.connect();
+      }
     } else {
-      this.connect().then(() => {
-        this.publish(topic, msg);
-      });
+      this.publishQueue.push({ topic, body });
+      this.connect();
     }
   }
 }
