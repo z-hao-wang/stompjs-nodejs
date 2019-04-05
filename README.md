@@ -31,6 +31,7 @@ await client.connect()
 
 ## Notes
 Currently it only tested to work with active MQ, I did not test on other MQ lib.
+
 Currently this wrapper only works for pub/sub mode, doesn't work for queue yet.
 
 contributions are welcome.
