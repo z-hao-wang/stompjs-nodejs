@@ -53,6 +53,8 @@ export class StompClient {
     if (this.connecting) return new Promise(r => setTimeout(r, 200));
     this.connecting = true;
     return new Promise((resolve, reject) => {
+      // onConnect will be called on everytime connect including reconnect.
+      // need to re-subscribe all topics when reconnected
       this.client.onConnect = (frame: any) => {
         // Do something, all subscribes must be done is this callback
         // This is needed because this will be executed after a (re)connect
