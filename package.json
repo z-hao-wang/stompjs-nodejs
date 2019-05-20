@@ -1,6 +1,6 @@
 {
   "name": "stompjs-nodejs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A nodejs wrapper for stompjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
